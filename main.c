@@ -3,38 +3,42 @@
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
+#include <stdbool.h>
+#include "functions.h"
 
-static int window_width,window_height;
-
-static void on_display(void);
-static void on_reshape(int width, int height);
-static void on_keyboard(unsigned char key, int x, int y);
 
 int main(int argc, char ** argv){
-
+	/*Glut inicijalizacija*/
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 	
+	/*Kreiranje prozora*/
 	glutInitWindowSize(800,800);
 	glutInitWindowPosition(100,100);
-	glutCreateWindow(argv[0]);
+	glutCreateWindow("Shape-fitting");
 
+	/*Funkcije za obradu dogadjaja*/
 	glutDisplayFunc(on_display);
 	glutKeyboardFunc(on_keyboard);
 	glutReshapeFunc(on_reshape);
 
 	glutFullScreen();
 	
+	/*OpenGL inicijalizacije*/
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
+
+	/*Postavljanje boje pozadine*/
 	glClearColor(0.7,0.8,0.8,0.2);
 
 	glutMainLoop();
+
 return 0;
 }
 
 
-void draw_coordinate_system(){
+/*void draw_coordinate_system(){
 	glDisable(GL_LIGHTING);
 
 	glBegin(GL_LINES);
@@ -53,32 +57,41 @@ void draw_coordinate_system(){
 
 	glEnable(GL_LIGHTING);
 
-}
+}*/
 
 
-static void on_display(void){
+void on_display(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
+	/*Podesavanje pozicije kamere*/
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(20, 20, 20,
+	gluLookAt(0, 0, 3,
 		       0, 0, 0,
 		       0, 1, 0);
 
-	draw_coordinate_system();
+	/*Iscrtavanje objekata*/
+	draw_picture();
+	draw_shapes();
+    draw_path();
+	draw_floor();
+	
+	//draw_coordinate_system();
 
-	glColor3f(1,1,1);
+	/*glColor3f(1,1,1);
 	glBegin(GL_POLYGON);
 		glVertex3f(9,9,0);
 		glVertex3f(9,5,0);
 		glVertex3f(5,9,0);
-	glEnd();
+	glEnd();*/
+
+	
 
 	glutSwapBuffers();
 }
 
 
-static void on_keyboard(unsigned char key, int x, int  y){
+void on_keyboard(unsigned char key, int x, int  y){
 
 	switch(key){
 		case 27:
@@ -88,17 +101,21 @@ static void on_keyboard(unsigned char key, int x, int  y){
 
 }
 
-static void on_reshape(int width, int height){
+void on_reshape(int width, int height){
+	/*Podesavanje sirine i visine*/
 	window_width=width;
 	window_height=height;
+
 	
 	glViewport(0,0,window_width, window_height);
-	
+
+	/*Podesavanje projekcije*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective( 60,
 			window_width/(float)window_height,
-			1,50);
+			1,100);
+	
 
 }
 
