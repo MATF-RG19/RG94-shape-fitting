@@ -5,10 +5,19 @@
 #include <time.h>
 #include <string.h>
 #include <stdbool.h>
+
 #include "functions.h"
+
+#define TIMER_INTERVAL 10
+#define TIMER_ID 0
+
+static float animation_parameter =0;
+static float animation_ongoing =0;
+
 
 
 int main(int argc, char ** argv){
+
 	/*Glut inicijalizacija*/
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
@@ -31,6 +40,7 @@ int main(int argc, char ** argv){
 
 	/*Postavljanje boje pozadine*/
 	glClearColor(0.7,0.8,0.8,0.2);
+
 
 	glutMainLoop();
 
@@ -71,8 +81,16 @@ void on_display(void){
 		       0, 1, 0);
 
 	/*Iscrtavanje objekata*/
+	
+	draw_picture_shapes();
 	draw_picture();
-	draw_shapes();
+
+    /*Animacija kretanja objekata na traci*/
+	glPushMatrix();
+		glTranslatef(-animation_parameter,0,0);
+		draw_shapes();
+	glPopMatrix();
+
     draw_path();
 	draw_floor();
 	
@@ -86,6 +104,7 @@ void on_display(void){
 	glEnd();*/
 
 	
+	
 
 	glutSwapBuffers();
 }
@@ -94,6 +113,24 @@ void on_display(void){
 void on_keyboard(unsigned char key, int x, int  y){
 
 	switch(key){
+		case 'r':
+			animation_parameter = 0;
+			glutPostRedisplay();
+			break;
+
+		case 's':
+		case 'S':
+			animation_ongoing = 0;
+			break;
+
+		case 'g':
+		case 'G':
+			if(!animation_ongoing){
+				animation_ongoing = 1;	
+				glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
+
+			}
+			break;
 		case 27:
 			exit(0);
 			break;
@@ -119,4 +156,13 @@ void on_reshape(int width, int height){
 
 }
 
+void on_timer(int id){
+	if(id==TIMER_ID){
+		animation_parameter+=0.005;
+
+	}
+	glutPostRedisplay();
+	if(animation_ongoing)
+		glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
+}
 

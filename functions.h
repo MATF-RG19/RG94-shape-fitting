@@ -13,7 +13,9 @@
 extern void on_display(void);
 extern void on_reshape(int width, int height);
 extern void on_keyboard(unsigned char key, int x, int y);
+extern void on_timer(int id);
 
+extern void draw_picture_shapes();
 extern void draw_floor();
 extern void draw_path();
 extern void draw_picture();
