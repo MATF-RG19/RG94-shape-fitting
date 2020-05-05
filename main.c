@@ -14,9 +14,25 @@
 static float animation_parameter =0;
 static float animation_ongoing =0;
 
+/*Niz objekata na traci*/
+Shapes shapes_array[100];
+/*Niz objekata na slici*/
+Shapes picture_array[9];
 
 
 int main(int argc, char ** argv){
+
+	/*Inicijalizacija objekata na traci*/
+	srand(time(NULL));//postavlja seme
+	for(int i=0; i<100; i++){
+		shapes_array[i].R = (rand()%100)/100.0;
+		shapes_array[i].G = (rand()%100)/100.0;
+		shapes_array[i].B = (rand()%100)/100.0;
+		shapes_array[i].x = -0.9 + i*2; //svaki naredni je na rastojanju 2 u odnosu na prvi objekat na traci
+		shapes_array[i].y = -2.3;
+		shapes_array[i].z = 1;
+		shapes_array[i].type = rand()%12;
+	}
 
 	/*Glut inicijalizacija*/
 	glutInit(&argc, argv);
@@ -72,23 +88,34 @@ return 0;
 
 void on_display(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	/*Podesavanje projekcije*/
+	glMatrixMode(GL_PROJECTION);
+    	glLoadIdentity();
+    	gluPerspective(
+            60,
+            window_width/(float)window_height,
+            1, 50);
 	
 	/*Podesavanje pozicije kamere*/
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0, 0, 3,
-		       0, 0, 0,
-		       0, 1, 0);
+	gluLookAt(
+            0, 0, 3,
+            0, 0, 0,
+            0, 1, 0
+        );
+	
 
 	/*Iscrtavanje objekata*/
 	
-	draw_picture_shapes();
+	draw_picture_shapes(picture_array);
 	draw_picture();
 
     /*Animacija kretanja objekata na traci*/
 	glPushMatrix();
-		glTranslatef(-animation_parameter,0,0);
-		draw_shapes();
+		move_shapes(-animation_parameter, 0, 0, shapes_array);
+		draw_shapes(shapes_array);
 	glPopMatrix();
 
     draw_path();
@@ -103,9 +130,6 @@ void on_display(void){
 		glVertex3f(5,9,0);
 	glEnd();*/
 
-	
-	
-
 	glutSwapBuffers();
 }
 
@@ -114,6 +138,7 @@ void on_keyboard(unsigned char key, int x, int  y){
 
 	switch(key){
 		case 'r':
+		case 'R':
 			animation_parameter = 0;
 			glutPostRedisplay();
 			break;
@@ -144,25 +169,19 @@ void on_reshape(int width, int height){
 	window_height=height;
 
 	
-	glViewport(0,0,window_width, window_height);
+	glViewport(0, 0, window_width, window_height);
 
-	/*Podesavanje projekcije*/
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective( 60,
-			window_width/(float)window_height,
-			1,100);
-	
 
 }
 
 void on_timer(int id){
 	if(id==TIMER_ID){
-		animation_parameter+=0.005;
+		animation_parameter = 0.03;
 
 	}
 	glutPostRedisplay();
 	if(animation_ongoing)
 		glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
 }
+
 

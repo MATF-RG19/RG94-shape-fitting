@@ -17,7 +17,7 @@ void draw_floor(){
 void draw_path(){
 	glPushMatrix();
 	glRotatef(6,1,0,0);
-	glScalef(7,0.15,1);
+	glScalef(7.5,0.15,1);
 	glPushMatrix();
 		glLineWidth(1);
 		glTranslatef(0,-5.2,0);
@@ -46,175 +46,170 @@ void draw_picture(){
 	
 }
 
-/*Funkcija koja iscrtava oblike koji su na traci*/
+/*Funkcija koja vrsi pomeranje objekata na traci za prosledjene vrednosti*/
+void move_shapes(double x, double y, double z, Shapes shapes_array[]){
 
-void draw_shapes(){
-	/*Crveni trougao*/
-	glPushMatrix();
 	for(int i=0; i<100; i++){
-
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glPushMatrix();
-			glTranslatef(-1.9,-0.10,1);
-			glScalef(0.5,0.5,0);
-			glBegin(GL_POLYGON);
-				glColor3f(1,0,0);
-				glVertex3f(-0.9,-0.9,0);
-				glVertex3f(-0.9,-0.5,0);
-				glVertex3f(-0.5,-0.9,0);
-			glEnd();
-
-		glPopMatrix();
-
+		shapes_array[i].x += x;
+		shapes_array[i].y += y;
+		shapes_array[i].z += z;
 	}
-	glPopMatrix();
-
-	/*Plavi kvadrat*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(-1.8,-0.45,1);
-			glScalef(0.2,0.2,0);
-			glBegin(GL_POLYGON);
-				glColor3f(0,0,1);
-				glVertex3f(0.5,-0.5,0);
-				glVertex3f(-0.5,-0.5,0);
-				glVertex3f(-0.5,0.5,0);
-				glVertex3f(0.5,0.5,0);
-			glEnd();
-		glPopMatrix();
-
-	}
-	glPopMatrix();
-
-
-	/*Zeleni trougao*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(-1.65,-0.8,1);
-			glScalef(0.5,0.5,0);
-			glBegin(GL_POLYGON);
-				glColor3f(0,1,0);
-				glVertex3f(0.9,0.9,0);
-				glVertex3f(0.9,0.5,0);
-				glVertex3f(0.5,0.9,0);
-			glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-
-
-
-	/*Crveni kvadrat*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(0,-0.45,1);
-			glScalef(0.2,0.2,0);
-			glBegin(GL_POLYGON);
-				glColor3f(1,0,0);
-				glVertex3f(0.5,-0.5,0);
-				glVertex3f(-0.5,-0.5,0);
-				glVertex3f(-0.5,0.5,0);
-				glVertex3f(0.5,0.5,0);
-			glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-
-
-
-	/*Narandzast cetvorougao*/	
-	glPushMatrix();
-	for(int i=0; i<100; i++){	
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(-0.65,-0.58,1);
-			glScalef(0.3,0.3,0.3);
-			glColor3f(1, 0.5, 0);
-    		glBegin(GL_POLYGON);
-    		    glVertex3f(0, 0, 0);
-    		    glVertex3f(-0.5, 0.5, 0);
-    		    glVertex3f(0, 1, 0);
-    		    glVertex3f(0.5, 0.5, 0);
-    		glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-
-	/*Pink trougao*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(0.2,-0.10,1);
-			glScalef(0.5,0.5,0);
-			glBegin(GL_POLYGON);
-				glColor3f(5, 0, 1);
-				glVertex3f(0.9,-0.9,0);
-				glVertex3f(0.9,-0.5,0);
-				glVertex3f(0.5,-0.9,0);
-			glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-
-	/*Braon trougao*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-	 	glPushMatrix();
-	  		glTranslatef(1.5,-0.80,1);
-			glScalef(0.5,0.5,0);
-			glBegin(GL_POLYGON);
-				glColor3f(0.5,0.3,0.2);
-				glVertex3f(-0.9,0.9,0);
-				glVertex3f(-0.9,0.5,0);
-				glVertex3f(-0.5,0.9,0);
-			glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-
-	/*Svetlo plavi trougao*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(1.65,-0.40,1);
-			glScalef(0.32,0.32,0.32);
-			glColor3f(0, 2, 1);
-    		glBegin(GL_POLYGON);
-    		    glVertex3f(0.5, -0.5, 0);
-    		    glVertex3f(-0.5, -0.5, 0);
-    		    glVertex3f(-0, 0, 0);
-    		glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
-	/*Tamno zeleni trougao*/
-	glPushMatrix();
-	for(int i=0; i<100; i++){
-		glTranslatef(5,0,0);
-		glPushMatrix();
-			glTranslatef(2.2,-0.40,1);
-			glScalef(0.32,0.32,0.32);
-			glColor3f(0, 0.6, 0);
-    		glBegin(GL_POLYGON);
-    		    glVertex3f(0.5, -0.5, 0);
-    		    glVertex3f(-0.5, -0.5, 0);
-    		    glVertex3f(-0, 0, 0);
-    		glEnd();
-		glPopMatrix();
-	}
-	glPopMatrix();
 
 }
 
+/*Funkcija koja iscrtava oblike koji su na traci*/
+void draw_shapes(Shapes shapes_array[]){
+	
+	for(int i=0; i<100; i++){
+		glPushMatrix();
+		//Crveni trougao
+		if(shapes_array[i].type == 0){ 
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(1,0,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 1){//Plavi kvadrat
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0,0,1);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 2){//Zeleni trougao
+			glPushMatrix();
+			glScalef(0.3,0.3,0);
+			glTranslatef(1,0,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0,1,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x-1,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 3){//Crveni kvadrat
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(1,0,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 4){//Narandzasti cetvorougao
+			glPushMatrix();
+				glTranslatef(0.15,0,0);
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(1,0.5,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+0.75,shapes_array[i].y+0.75,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1.5,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x-0.75,shapes_array[i].y+0.75,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 5){ //Roze trougao
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(5,0,1);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 6){//Braon trougao
+			glPushMatrix();
+			glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0.5,0.3,0.2);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 7){//Svetlo plavi trougao
+			glPushMatrix();
+			glTranslatef(-0.05,0,0);
+			glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0,2,1);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1.5,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+0.75,shapes_array[i].y+0.75,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 8){//Tamno zeleni trougao
+			glPushMatrix();
+			glTranslatef(-0.05,0,0);
+			glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0,0.6,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1.5,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+0.75,shapes_array[i].y+0.75,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 9){//Roze kvadrat
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(5,0,1);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else if(shapes_array[i].type == 10){//Zeleni kvadrat
+			glPushMatrix();
+				glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(0,0.7,0);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		else {//Kvadrat proizvoljne boje
+			glPushMatrix();
+			glScalef(0.3,0.3,0);
+				glBegin(GL_POLYGON);
+					glColor3f(shapes_array[i].R,shapes_array[i].G,shapes_array[i].B);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
+					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
+				glEnd();
+			glPopMatrix();
+		}
+		
+		glPopMatrix();
+	}
+}
+	
 
