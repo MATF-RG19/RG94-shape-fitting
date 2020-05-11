@@ -50,17 +50,48 @@ void draw_picture(){
 void move_shapes(double x, double y, double z, Shapes shapes_array[]){
 
 	for(int i=0; i<100; i++){
-		shapes_array[i].x += x;
-		shapes_array[i].y += y;
-		shapes_array[i].z += z;
+		if(shapes_array[i].should_move){//ako oblik treba da se krece
+			shapes_array[i].x += x;
+			shapes_array[i].y += y;
+			shapes_array[i].z += z;
+		}
 	}
 
 }
 
 /*Funkcija koja iscrtava oblike koji su na traci*/
 void draw_shapes(Shapes shapes_array[]){
+
+	if(selector_active){//ako je aktivan selektor je crveni
+		glColor3f(1,0,0);
+	}
+	else{ //beo inace
+		glColor3f(1,1,1);
+	}
+	//Iscrtavanje selektora oblika na traci
+	glPushMatrix();
+		glLineWidth(5.0);
+		glBegin(GL_LINES);
+			glVertex3f(0,-0.7,0);
+			glVertex3f(0,-0.2,0);
+
+			glVertex3f(0,-0.2,0);
+			glVertex3f(0.5,-0.2,0);
+
+			glVertex3f(0.5,-0.2,0);
+			glVertex3f(0.5,-0.7,0);
+			
+			glVertex3f(0.5,-0.7,0);
+			glVertex3f(0,-0.7,0);
+		glEnd();
+
+	glPopMatrix();
 	
 	for(int i=0; i<100; i++){
+		
+		if(!shapes_array[i].should_draw)//ako ne treba da crtam oblik,nastavi 
+			continue;
+
 		glPushMatrix();
 		//Crveni trougao
 		if(shapes_array[i].type == 0){ 
@@ -211,5 +242,27 @@ void draw_shapes(Shapes shapes_array[]){
 		glPopMatrix();
 	}
 }
-	
+//oznacava 1 objekat iz niza
+void shape_select(Shapes shapes_array[]){
+
+	double min_distance_from_selector=100000000.0;//neko proizvoljno min rastojanje
+	int shape_index = -1;// na pocetku indeks
+	for(int i=0; i<100; i++){//trazim onaj koji  je najblizi selektor kvadratu(u odnosu na levu ivicu)
+		//trebalo bi da bude oblik - x koordinata leve ivice ali je leva ivica na koordinati 0
+		if(abs(shapes_array[i].x) < min_distance_from_selector && shapes_array[i].should_move
+			&& abs(shapes_array[i].x) < 0.5){
+			//azuriram oblik sa min rastojanje i indeks oblika
+			min_distance_from_selector = abs(shapes_array[i].x);
+			shape_index = i;
+		}
+	}
+
+	if(shape_placed == 0){
+		shapes_array[shape_index].should_move = false;//zaustavim taj koji sam nasla
+		shape_placed = 1;//ako nisam postavila oblik- oznacim ga
+		active_shape = shapes_array[shape_index];//trenutni zaustavljeni oblik(selektovani)
+	}
+
+
+}	
 
