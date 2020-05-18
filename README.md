@@ -15,13 +15,13 @@
 
 ## :video_game: Komande:
 
-|Komanda                      |	Akcija |<br/>
-|---                          | ---|<br/>
-| <kbd>G</kbd> / <kbd>g</kbd> | Pokretanje igrice-start.Pokretanje igrice-nakon poraza. |<br/>
-| <kbd>R</kbd> / <kbd>r</kbd> | Restartovanje igrice.|<br/>
-| <kbd>S</kbd> / <kbd>s</kbd> |	Pauziranje igrice. |<br/>
-| <kbd>space</kbd>            | Selektovanje oblika na traci.|<br>
-| <em>levi klik na mis</em>   | Odabir oblika sa slike na zidu. | <br/>
-| <kbd>ESC</kbd>              | Izlazak iz igrice |<br/>
+|Komanda                      |	Akcija 								|<br/>
+|---                          | ---								|<br/>
+| <kbd>G</kbd> / <kbd>g</kbd> | Pokretanje igrice-start.Pokretanje igrice-nakon poraza. 	|<br/>
+| <kbd>R</kbd> / <kbd>r</kbd> | Restartovanje igrice.						|<br/>
+| <kbd>S</kbd> / <kbd>s</kbd> |	Pauziranje igrice. 						|<br/>
+| <kbd>space</kbd>            | Selektovanje oblika na traci.					|<br/>
+| <em>levi klik na mis</em>   | Odabir oblika sa slike na zidu. 				|<br/>
+| <kbd>ESC</kbd>              | Izlazak iz igrice.						|<br/>
 
 
