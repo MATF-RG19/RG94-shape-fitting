@@ -22,7 +22,7 @@ void draw_path(){
 		glLineWidth(1);
 		glTranslatef(0,-5.2,0);
 		glColor3f(0,0,0);
-		glutWireCube(1);
+	 	glutWireCube(1);
 	   	glColor3f(0.91,0.76,0.65);
 		glutSolidCube(1);
 	glPopMatrix();
@@ -34,14 +34,42 @@ void draw_path(){
 /*Funkcija koja iscrtava sliku na zidu sa okvirom*/
 void draw_picture(){
 	glPushMatrix();
+	glPushMatrix();
 		glScalef(2.2,1.5,0.2);
 		glLineWidth(20);
 		glTranslatef(0,0.55,0);
 		glColor3f(0.52,0.37,0.26);
 		glutWireCube(1);
-		glColor3f(0.91,0.76,0.65);
-		glutSolidCube(1);
+		//glColor3f(0.91,0.76,0.65);
+		//glutSolidCube(1);
 	glPopMatrix();
+	glEnable(GL_TEXTURE_2D);
+
+      /* Tekstura za postavljanje slike u ram*/
+     
+    glBindTexture(GL_TEXTURE_2D, names[7]);
+    glBegin(GL_QUADS);
+        glNormal3f(0, 0, 1);
+
+        glTexCoord2f(0, 0);
+        glVertex3f(-1.13, 0.08, 0.05);
+
+        glTexCoord2f(1, 0);
+        glVertex3f(1.13, 0.08, 0.05);
+
+        glTexCoord2f(1, 1);
+        glVertex3f(1.13, 1.6, 0.05);
+
+        glTexCoord2f(0, 1);
+        glVertex3f(-1.13, 1.6, 0.05);
+    glEnd();
+
+    /* Iskljucujemo aktivnu teksturu */
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glPopMatrix();
+
+ 
 
 	
 }
@@ -103,7 +131,6 @@ void draw_shapes(Shapes shapes_array[]){
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
 				glEnd();
-
 			glPopMatrix();
 		}
 		else if(shapes_array[i].type == 1){//Plavi kvadrat
@@ -164,7 +191,6 @@ void draw_shapes(Shapes shapes_array[]){
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
 				glEnd();
-
 			glPopMatrix();
 		}
 		else if(shapes_array[i].type == 6){//Braon trougao
@@ -240,6 +266,8 @@ void draw_shapes(Shapes shapes_array[]){
 		}
 		
 		glPopMatrix();
+
+	
 	}
 }
 //oznacava 1 objekat iz niza

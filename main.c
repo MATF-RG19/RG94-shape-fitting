@@ -1,3 +1,5 @@
+/*Projekat Shape fitting radjen na predmetu Racunarska grafika*/
+/* ** Tamara Stojkovic 178/2017** */
 #include <GL/glut.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,9 +9,11 @@
 #include <stdbool.h>
 
 #include "functions.h"
+#include "image.h"
 
 #define TIMER_INTERVAL 10
 #define TIMER_ID 0
+
 
 static float animation_parameter =0;
 static float animation_ongoing =0;
@@ -25,8 +29,7 @@ int mouse_y;//y koordinata misa
 int x, y;
 
 //promenljiva koja cuva tekuci broj poena 
-int poeni=0;
-
+int points=0;
 
 
 int main(int argc, char ** argv){
@@ -59,24 +62,67 @@ int main(int argc, char ** argv){
 	glutInitWindowPosition(100,100);
 	glutCreateWindow("Shape-fitting");
 
+	
+	//Ukljucivanje tekstura koje koristim
+	 include_textures();
+
+
 	/*Funkcije za obradu dogadjaja*/
-	glutDisplayFunc(on_display);
+	
+	glutDisplayFunc(draw_start_screen);
+	glutReshapeFunc(on_reshape);
 	glutKeyboardFunc(on_keyboard);
 	glutKeyboardUpFunc(on_upKeyboard);
-	glutReshapeFunc(on_reshape);
 	glutMouseFunc(on_click);
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-
+	
 
 	
 	/*OpenGL inicijalizacije*/
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
+	
+	glEnable(GL_NORMALIZE);
+	glShadeModel(GL_SMOOTH);
 
 	glutFullScreen();
 
 	/*Postavljanje boje pozadine*/
 	glClearColor(0.7,0.8,0.8,0.2);
+	
+	/*Podesavanje komponenata osvetljenja*/
+	//Komponente uzete sa casa vezbi i postavljeni odgovarajuci parametri za ovaj projekat
+
+	//Pozicija svetla(direkcionalno svtelo)
+	GLfloat light_position[] = { 0, 0, 0, 0 };
+	//Ambijentalna boja svetla
+    GLfloat light_ambient[] = { 0.8, 0.8, 0.8, 0.1 };
+	//Difuzna boja svetla
+   	GLfloat light_diffuse[] = { 0.8, 0.8, 0.8, 1 };
+	//Spekularna boja svetla
+  	GLfloat light_specular[] = { 0.6, 0.6, 0.6, 1 };
+
+ 	/*Podesavanje komponenata materijala*/
+
+	//Koeficijent ambijentalne refleksije materijala
+	GLfloat ambient_coeffs[] = { 0.9, 0.9, 0.9, 0.1 };
+	//Koeficijent difuzne refleksije materijala
+    GLfloat diffuse_coeffs[] = { 0.8, 0.8, 0.8, 0.1 };
+	//Koeficijent glatkosti materijala
+   	GLfloat shininess = 20;
+	
+	//Ukljucivanje odgovarajucih, prethodno definisanih  komponenata
+	glEnable(GL_LIGHTING);
+    	glEnable(GL_LIGHT0);
+    	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+   		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+
+    	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_coeffs);
+    	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
+        glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+	
 
 
 	glutMainLoop();
@@ -85,7 +131,7 @@ return 0;
 }
 
 
-/*void draw_coordinate_system(){
+void draw_coordinate_system(){
 	glDisable(GL_LIGHTING);
 
 	glBegin(GL_LINES);
@@ -104,22 +150,12 @@ return 0;
 
 	glEnable(GL_LIGHTING);
 
-}*/
+}
 
 
 void on_display(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glViewport(0, 0, window_width, window_height);
-
-
-	/*Podesavanje projekcije*/
-	glMatrixMode(GL_PROJECTION);
-    	glLoadIdentity();
-    	gluPerspective(
-            60,
-            window_width/(float)window_height,
-            1, 50);
 	
 	/*Podesavanje pozicije kamere*/
 	glMatrixMode(GL_MODELVIEW);
@@ -130,54 +166,93 @@ void on_display(void){
             0, 1, 0
         );
 
-	/*Podesavanje komponenata osvetljenja*/
 
-	//Pozicija svetla(direkcionalno svtelo)
-	GLfloat light_position[] = { 0, 0, 0, 0 };
-	//Ambijentalna boja svetla
-    	GLfloat light_ambient[] = { 0.8, 0.8, 0.8, 0.1 };
-	//Difuzna boja svetla
-    	GLfloat light_diffuse[] = { 0.8, 0.8, 0.8, 1 };
-	//Spekularna boja svetla
-  	GLfloat light_specular[] = { 0.6, 0.6, 0.6, 1 };
-
- 	/*Podesavanje komponenata materijala*/
-
-	//Koeficijent ambijentalne refleksije materijala
-	GLfloat ambient_coeffs[] = { 0.9, 0.9, 0.9, 0.1 };
-	//Koeficijent difuzne refleksije materijala
-    	GLfloat diffuse_coeffs[] = { 0.8, 0.8, 0.8, 0.1 };
-	//Koeficijent glatkosti materijala
-    	GLfloat shininess = 20;
-	
-	//Ukljucivanje odgovarajucih, prethodno definisanih  komponenata
+	//Podesavanje tekstura(fajlovi za  inicijalizaciju tekstura sa casova vezbi)*/
 	glEnable(GL_LIGHTING);
-    	glEnable(GL_LIGHT0);
-    	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-   	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
+	//Podesava se tekstura zida
+	glBindTexture(GL_TEXTURE_2D, names[2]);
+	glBegin(GL_QUADS);
+	glNormal3f(0, 0, 1);
 
-    	glMaterialfv(GL_FRONT, GL_AMBIENT, ambient_coeffs);
-    	glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
-        glMaterialf(GL_FRONT, GL_SHININESS, shininess);
+
+	    glTexCoord2f(0, 0);
+    	glVertex3f(-6, -0.15 , 0);
+
+    	glTexCoord2f(1, 0);
+    	glVertex3f(6, -0.15, 0);
+
+    	glTexCoord2f(1, 1);
+    	glVertex3f(6, 3, 0);
+
+    	glTexCoord2f(0, 1);
+    	glVertex3f(-6, 3, 0);
+    	glEnd();
+
+		
+
+	//Podesava se tekstura poda
+	glBindTexture(GL_TEXTURE_2D, names[3]);
+	glBegin(GL_QUADS);
+	glNormal3f(0, 0, 1);
+
+
+	    glTexCoord2f(0, 0);
+    	glVertex3f(-6, -3, 1);
+
+    	glTexCoord2f(1, 0);
+    	glVertex3f(6, -3, 1);
+
+    	glTexCoord2f(1, 1);
+		glVertex3f(6, 0, -1);
+    
+		glTexCoord2f(0, 1);
+		glVertex3f(-6, 0 ,-1);
+    	glEnd();
+
+
+
+	//Postavljanje vrata na zid
+	glBindTexture(GL_TEXTURE_2D, names[0]);
+    glBegin(GL_QUADS);
+        glNormal3f(0, 0, 1);
+
+        glTexCoord2f(0, 0);
+        glVertex3f(-3, -0.15, 0.01);
+
+        glTexCoord2f(1, 0);
+        glVertex3f(-2, -0.15, 0.01);
+
+        glTexCoord2f(1, 1);
+        glVertex3f(-2, 1.7, 0.01);
+
+        glTexCoord2f(0, 1);
+        glVertex3f(-3, 1.7, 0.01);
+    glEnd();
 	
+	
+    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
 
 	/*Iscrtavanje objekata*/
 	
 	draw_picture_shapes(picture_array);
 	draw_picture();
 
-    	/*Animacija kretanja objekata na traci*/
+    /*Animacija kretanja objekata na traci*/
 	glPushMatrix();
 		move_shapes(-animation_parameter, 0, 0, shapes_array);
 		draw_shapes(shapes_array);
 	glPopMatrix();
 
-    	draw_path();
-	draw_floor();
+
+    draw_path();
+    /*Zbog postavljenje teksture poda*/
+	//draw_floor();
 	
-	if(selector_active == 1){
+	if(selector_active == 1){//Ispis aktivnosti selektora
 		printf("Select\n");
 	}
 
@@ -188,12 +263,7 @@ void on_display(void){
 	
 	//draw_coordinate_system();
 
-	/*glColor3f(1,1,1);
-	glBegin(GL_POLYGON);
-		glVertex3f(9,9,0);
-		glVertex3f(9,5,0);
-		glVertex3f(5,9,0);
-	glEnd();*/
+
 
 	glutSwapBuffers();
 }
@@ -204,9 +274,26 @@ void on_keyboard(unsigned char key, int x, int  y){
 	switch(key){
 		case 'r':
 		case 'R':
-			animation_parameter = 0;
-			glutPostRedisplay();
-			break;
+			//Resetovanje svega
+	    	selector_active = 0;
+	    	shape_placed = 0;
+
+	    	for(int i=0; i<100; i++){
+		    	shapes_array[i].should_move = true;
+		    	shapes_array[i].should_draw = true;
+		    	shapes_array[i].R = (rand()%100)/100.0;
+		    	shapes_array[i].G = (rand()%100)/100.0;
+		    	shapes_array[i].B = (rand()%100)/100.0;
+		    	shapes_array[i].x = -0.9 + i*2;
+		    	shapes_array[i].y = -2.3;
+		    	shapes_array[i].z = 1;
+		    	shapes_array[i].type = rand()%12;
+	    	}
+				animation_parameter = 0;
+				points = 0;
+				animation_ongoing=1;
+				glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
+	   		break;
 
 		case 's':
 		case 'S':
@@ -216,6 +303,14 @@ void on_keyboard(unsigned char key, int x, int  y){
 		case 'g':
 		case 'G':
 			if(!animation_ongoing){
+				
+				glutDisplayFunc(on_display);
+				for(int i=0; i<100; i++){
+				shapes_array[i].should_move = true;
+				shapes_array[i].should_draw = true;
+
+				}
+				
 				animation_ongoing = 1;	
 				glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
 
@@ -246,6 +341,10 @@ void on_upKeyboard(unsigned char key, int x, int y){
 
 }
 
+/* Napomene: 1) rad funkcije za klik misa sa sajta  https://www.opengl.org/resources/libraries/glut/spec3/node50.html
+			 2)izvrseno izracunavanje x,y odgovarajucih koordinata- kako bi projekat radio za bilo koji ekran
+			 3)korsicene matematicke formule za odredjivanje opsega oblika, kao i proporcija izracunavanja x i y */
+
 void on_click(int button, int state, int mouse_x, int mouse_y){
 
 
@@ -259,61 +358,62 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 
 		//Sada odredjujem na osnovu klika misa(opsega oblika), koji je oblik izabran
 		//plavi kvadrat-indikator 1
-		if(x>=592 && x<=650 && y<=270 && y>=215){
+		if(x>=coordinate_x(592) && x<=coordinate_x(650) && y<=coordinate_y(270) && y>=coordinate_y(215)){
 			if(active_shape.type==1){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
 
 		}
 		//crveni kvadrat-indikator 3
-		if(x>=650 && x<=710 && y<=270 && y>=215){
+		if(x>=coordinate_x(650) && x<=coordinate_x(710) && y<=coordinate_y(270) && y>=coordinate_y(215)){
 			if(active_shape.type==3){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
 
 		}
 		//zeleni kvadrat-indikator 10
-		if(x>=710 && x<=770 && y<=270 && y>=215){
+		if(x>=coordinate_x(710) && x<=coordinate_x(770) && y<=coordinate_y(270) && y>=coordinate_y(215)){
 			if(active_shape.type==10){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
 
 		}
 		//roze kvadrat-indikator 9
-		if(x>=650 && x<=708 && y<=215 && y>=155){
+		if(x>=coordinate_x(650) && x<=coordinate_x(708) && y<=coordinate_y(215) && y>=coordinate_y(155)){
 			if(active_shape.type==9){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
 
 		}
 		//svetlo plavi trougao-indikator 7
-		if((x>=592 && x<=636 && y<=154 && y>=154-(x-592)) || (x>=636 && x<=680 && y<=154 && y>=154-(680-x))){
+		if((x>=coordinate_x(592) && x<=coordinate_x(636) && y<=coordinate_y(154) &&  										   				y>= coordinate_y(154)-(x-coordinate_x(592))) || (x>=coordinate_x(636) && x<=coordinate_x(680) 
+			&& y<=coordinate_y(154) && y>=coordinate_y(154)-(coordinate_x(680)-x))){
 			
 			if(active_shape.type==7){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
@@ -321,48 +421,53 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 		}
 
 		//tamno zeleni trougao-indikator 8
-		if((x>=683 && x<=726 && y<=154 && y>=(154-(x-683))) || (x>=726 && x<=768 && y<=154 && y>=(154-(768-x)))){
+		if((x>=coordinate_x(683) && x<=coordinate_x(726) && y<=coordinate_y(154) &&											 				y>=(coordinate_y(154)-(x-coordinate_x(683)))) || (x>=coordinate_x(726) && x<=coordinate_x(768)						
+			&& y<=coordinate_y(154) && y>=(coordinate_y(154)-(coordinate_x(768)-x)))){
 			
 			if(active_shape.type==8){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
 
 		}
 		//zeleni trougao-indikator 2
-		if(x>=531 && x<=591 && y>=215 && y<=(215+(x-531))){
+		if(x>=coordinate_x(531) && x<=coordinate_x(591) && y>=coordinate_y(215) && 											 	         y<=(coordinate_y(215)+(x-coordinate_x(531)))){
 			if(active_shape.type==2){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}
 
 		}
 		//braon trougao-indikator 6
-		if(x>=771 && x<=826 && y>=215 && y<=(215+(826-x))){
+		if(x>=coordinate_x(771) && x<=coordinate_x(826) && y>=coordinate_y(215) &&
+		        y<=(coordinate_y(215)+(coordinate_x(826)-x))){
 			if(active_shape.type==6){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}
 
 		}
 		//narandzasti cetvorougao-indikator 4
-		if((x>=638 && x<=680 && y<=110 && y>=110-(x-638))|| (x>=680 && x<=724 && y<=110 && y>=110-(724-x))||(x>=638 && 				x<=680 && y>=110 && y<=(110+(x-638))) || ( x>=680 && x<=724 && y>=110 && y<=(110+(724-x) )) ){
+		if((x>=coordinate_x(638) && x<=coordinate_x(680) && y<=coordinate_y(110) && y>= coordinate_y(110)-(x-coordinate_x(638)))
+		||(x>=coordinate_x(680) && x<=coordinate_x(724) && y<=coordinate_y(110) && y>= coordinate_y(110)-(coordinate_x(724)-x)) 		||(x>=coordinate_x(638) && x<=coordinate_x(680) && y>=coordinate_y(110) && y<=(coordinate_y(110)+(x-coordinate_x(638))))
+		||(x>=coordinate_x(680) && x<=coordinate_x(724) && y>=coordinate_y(110) && y<=coordinate_y(110)+(coordinate_x(724)-x)))
+		{
 			
 			if(active_shape.type==4){
-				poeni+=10;
+				points+=10;
 			}
 			else{
-				poeni-=10;
+				points-=10;
 				
 			}			
 
@@ -371,7 +476,7 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 		
 		
 		
-		printf("poeni:%d\n",poeni);
+		printf("points:%d\n",points);
 
 		for(int i=0; i<100; i++){
                 	if(!shapes_array[i].should_move){//kad kliknem misem da mi nestane  oblik sa trake(uklopljeni)
@@ -393,6 +498,17 @@ void on_reshape(int width, int height){
 	window_width=width;
 	window_height=height;
 
+	glViewport(0, 0, window_width, window_height);
+
+
+	/*Podesavanje projekcije*/
+	glMatrixMode(GL_PROJECTION);
+    	glLoadIdentity();
+    	gluPerspective(
+            60,
+            window_width/(float)window_height,
+            1, 50);
+
 
 }
 
@@ -402,8 +518,38 @@ void on_timer(int id){
 
 	}
 	glutPostRedisplay();
-	if(animation_ongoing)
+	if(animation_ongoing){
 		glutTimerFunc(TIMER_INTERVAL,on_timer,TIMER_ID);
+	
+	}
+	
+	/*Ako su poeni manji ili jednaki 50-gameover ekran*/
+	/*Na g moguce ponovo pokretanje igrice*/
+	if(points <= -50){
+		for(int i=0; i<100; i++){
+		    shapes_array[i].should_move = true;
+		    shapes_array[i].should_draw = true;
+		    shapes_array[i].R = (rand()%100)/100.0;
+		    shapes_array[i].G = (rand()%100)/100.0;
+		    shapes_array[i].B = (rand()%100)/100.0;
+		    shapes_array[i].x = -0.9 + i*2;
+		    shapes_array[i].y = -2.3;
+		    shapes_array[i].z = 1;
+		    shapes_array[i].type = rand()%12;
+	    }
+	    animation_ongoing=0;
+	    animation_parameter = 0;
+	    points = 0;
+	    selector_active = 0;
+	    shape_placed = 0;
+		glutDisplayFunc(draw_end_screen);
+	}
+
+	/*Uslov pobede(zavrsetka igrice) je ostvariti bar 150 poena */
+	if(points >= 150)
+		glutDisplayFunc(draw_win_screen);
+
+	
 }
 
 
@@ -423,6 +569,18 @@ int calculate_y( int mouse_y, int window_height){
 	return y;
 }
 
+//x:p=window_width:1360
+int coordinate_x(int p){
+	int first=(int)window_width*p/1360;
+	return first;
+}
+
+int coordinate_y(int q){
+	int second=(int)window_height*q/663;
+	return second;
+	
+}
+
 /*Funkacija koja ispisuje poene na ekranu*/
 void draw_text(){
 	char points_str[50];
@@ -439,21 +597,170 @@ void draw_text(){
 			glLoadIdentity();
 	//Ispisivanje skora na ekranu
 		glPushMatrix();
-			glRasterPos2f(70, window_height-50);
-		sprintf(points_str,"POINTS: %d",poeni);
+		glRasterPos2f(window_width-200,window_height-70);
+		sprintf(points_str,"POINTS: %d",points);
 		int length=strlen(points_str);
 		for(int i=0; i<length; i++){
 			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,points_str[i]);
 		}
-		glPopMatrix();
 
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
+	
+	/*Postavljanje teksture za poene*/
+	glEnable(GL_TEXTURE_2D);
+
+      	glBindTexture(GL_TEXTURE_2D, names[1]);  
+    
+
+      	glBegin(GL_QUADS);
+        	glTexCoord2f(0, 0);
+        	glVertex2f(window_width-230,window_height-100);
+
+        	glTexCoord2f(0, 1);
+        	glVertex2f(window_width-230,window_height-20);
+
+        	glTexCoord2f(1, 1);
+        	glVertex2f(window_width-50,window_height-20);
+
+        	glTexCoord2f(1, 0);
+        	glVertex2f(window_width-50,window_height-100);
+      glEnd();
+      
+
+   	glPopMatrix();
+
+    glMatrixMode(GL_PROJECTION);    
+  	glPopMatrix();
+
+	glMatrixMode(GL_MODELVIEW);
+
+
+		
+}
+/*Iscrtavanje pocetnog ekrana*/
+ void draw_start_screen(){
+                                                                                                                                         
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, names[5]);
+
+    glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+    glLoadIdentity();
+  
+		gluOrtho2D(0, window_width,0, window_height);
+		
 		glMatrixMode(GL_MODELVIEW);
+  		glLoadIdentity();
+
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(0,0);
+
+			glTexCoord2f(0, 1);
+			glVertex2f(0, window_height);
+
+			glTexCoord2f(1, 1);
+			glVertex2f(window_width,window_height);
+
+			glTexCoord2f(1, 0);
+			glVertex2f(window_width,0);
+		glEnd();
 		
+		glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	
+	glMatrixMode(GL_MODELVIEW);
+
+	glDisable(GL_TEXTURE_2D);
+
+    glutSwapBuffers();
+
+}
+
+/*Iscrtavanje ekrana za kraj igre(gameover)*/
+void draw_end_screen(){
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, names[4]);
+
+    glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+    glLoadIdentity();
+  
+		gluOrtho2D(0, window_width,0, window_height);
 		
+		glMatrixMode(GL_MODELVIEW);
+  		glLoadIdentity();
+
+		glBegin(GL_QUADS);
+			glTexCoord2f(0, 0);
+			glVertex2f(0,0);
+
+			glTexCoord2f(0, 1);
+			glVertex2f(0, window_height);
+
+			glTexCoord2f(1, 1);
+			glVertex2f(window_width,window_height);
+
+			glTexCoord2f(1, 0);
+			glVertex2f(window_width,0);
+		glEnd();
+		
+		glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	
+	glMatrixMode(GL_MODELVIEW);
+
+	glDisable(GL_TEXTURE_2D);
+
+    glutSwapBuffers();
+
 }
 
 
+
+/*Iscrtavanje ekrana za pobedu*/
+void draw_win_screen() {
+
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+
+  glEnable(GL_TEXTURE_2D);
+  glBindTexture(GL_TEXTURE_2D, names[6]);
+  glMatrixMode(GL_PROJECTION);
+
+  glPushMatrix();
+	  glLoadIdentity();
+	  gluOrtho2D(0, window_width,0, window_height);
+	    
+	  glMatrixMode(GL_MODELVIEW);
+	  glLoadIdentity();
+
+	  glBegin(GL_QUADS);
+		  glTexCoord2f(0, 0);
+		  glVertex2f(0,0);
+
+		  glTexCoord2f(0, 1);
+		  glVertex2f(0, window_height);
+
+		  glTexCoord2f(1, 1);
+		  glVertex2f(window_width,window_height);
+
+		  glTexCoord2f(1, 0);
+		  glVertex2f(window_width,0);
+	  glEnd();
+	    
+	  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  
+  glMatrixMode(GL_MODELVIEW);
+
+  
+
+  glutSwapBuffers();
+
+}
 
 
