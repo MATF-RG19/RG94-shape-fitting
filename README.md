@@ -15,25 +15,25 @@
 
 ## :video_game: Komande:
 
-|Komanda                      |	Akcija |<br/>
-|---                          | ---	|<br/>
-| <kbd>G</kbd><kbd>g</kbd> | Pokretanje igrice-start.Pokretanje igrice-nakon poraza.|<br/>
-| <kbd>R</kbd><kbd>r</kbd> | Restartovanje igrice.|<br/>
-| <kbd>S</kbd><kbd>s</kbd> |	Pauziranje igrice. |<br/>
-| <kbd>space</kbd>            | Selektovanje oblika na traci.|<br/>
-| <em>levi klik na mis</em>   | Odabir oblika sa slike na zidu.|<br/>
-| <kbd>ESC</kbd>              | Izlazak iz igrice.|<br/>
+|Komanda                      |	Akcija |
+|---                          | ---	|
+| <kbd>G</kbd>/<kbd>g</kbd>   | Pokretanje igrice-start.Pokretanje igrice-nakon poraza.|
+| <kbd>R</kbd>/<kbd>r</kbd>   | Restartovanje igrice.|
+| <kbd>S</kbd>/<kbd>s</kbd>   |Pauziranje igrice. |
+| <kbd>space</kbd>            | Selektovanje oblika na traci.|
+| <em>levi klik na mis</em>   | Odabir oblika sa slike na zidu.|
+| <kbd>ESC</kbd>              | Izlazak iz igrice.|
 
 
-## :hammer: Instalacija i pokretanje:
+## :hammer: :wrench: Instalacija i pokretanje:
 
+```shell
 git clone https://github.com/MATF-RG19/RG94-shape-fitting
+```
 
-* Pozicionirajte se u direktorijum RG94-shape-fitting
-* Pokrenite Makefile make
-* Pokrenite igricu komandom ./shape-fitting
-
-
+* Pozicionirajte se u direktorijum `RG94-shape-fitting/src/` <br>
+* Pokrenite Makefile `make` <br>
+* Pokrenite igricu komandom `./shape-fitting`
 
 
 
