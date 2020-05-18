@@ -10,14 +10,14 @@
 #include <stdbool.h>
 
 /*Slike za teksture*/
-#define FILENAME0 "Textures/door.bmp"
-#define FILENAME1 "Textures/points.bmp"
-#define FILENAME2 "Textures/wall.bmp"
-#define FILENAME3 "Textures/floor.bmp"
-#define FILENAME4 "Textures/gameover.bmp"
-#define FILENAME5 "Textures/start.bmp"
-#define FILENAME6 "Textures/win.bmp"
-#define FILENAME7 "Textures/sea.bmp"
+#define FILENAME0 "../Textures/door.bmp"
+#define FILENAME1 "../Textures/points.bmp"
+#define FILENAME2 "../Textures/wall.bmp"
+#define FILENAME3 "../Textures/floor.bmp"
+#define FILENAME4 "../Textures/gameover.bmp"
+#define FILENAME5 "../Textures/start.bmp"
+#define FILENAME6 "../Textures/win.bmp"
+#define FILENAME7 "../Textures/sea.bmp"
 
 /*Identifikatori tekstura*/
 GLuint names[8];
