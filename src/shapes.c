@@ -131,7 +131,7 @@ void draw_shapes(Shapes shapes_array[]){
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
 				glEnd();
-			glPopMatrix();
+            glPopMatrix();
 		}
 		else if(shapes_array[i].type == 1){//Plavi kvadrat
 			glPushMatrix();

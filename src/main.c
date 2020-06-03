@@ -351,8 +351,10 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 	if(button == GLUT_LEFT_BUTTON && state == GLUT_DOWN){
 		printf("Kliknuto: %d %d\n", mouse_x, mouse_y);
 		//Racunanje koordinata misa za proizvoljni ekran
-		x=calculate_x(mouse_x, window_width);
-		y=calculate_y(mouse_y, window_height);
+		//x=calculate_x(mouse_x, window_width);
+		//y=calculate_y(mouse_y, window_height);
+		x=mouse_x;
+		y=mouse_y;
 		printf("x:%d, y: %d\n",x,y);
 		//printf("Sirina: %d visina: %d\n", window_width, window_height);
 
@@ -406,7 +408,7 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 
 		}
 		//svetlo plavi trougao-indikator 7
-		if((x>=coordinate_x(592) && x<=coordinate_x(636) && y<=coordinate_y(154) &&  										   				y>= coordinate_y(154)-(x-coordinate_x(592))) || (x>=coordinate_x(636) && x<=coordinate_x(680) 
+		if((x>=coordinate_x(592) && x<=coordinate_x(636) && y<=coordinate_y(154) &&  										   				y>= coordinate_y(154)-(x+coordinate_x(592))) || (x>=coordinate_x(636) && x<=coordinate_x(680) 
 			&& y<=coordinate_y(154) && y>=coordinate_y(154)-(coordinate_x(680)-x))){
 			
 			if(active_shape.type==7){
@@ -422,7 +424,7 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 
 		//tamno zeleni trougao-indikator 8
 		if((x>=coordinate_x(683) && x<=coordinate_x(726) && y<=coordinate_y(154) &&											 				y>=(coordinate_y(154)-(x-coordinate_x(683)))) || (x>=coordinate_x(726) && x<=coordinate_x(768)						
-			&& y<=coordinate_y(154) && y>=(coordinate_y(154)-(coordinate_x(768)-x)))){
+			&& y<=coordinate_y(154) && y>=(coordinate_y(154)-(coordinate_x(768)+x)))){
 			
 			if(active_shape.type==8){
 				points+=10;
@@ -435,7 +437,7 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 
 		}
 		//zeleni trougao-indikator 2
-		if(x>=coordinate_x(531) && x<=coordinate_x(591) && y>=coordinate_y(215) && 											 	         y<=(coordinate_y(215)+(x-coordinate_x(531)))){
+		if(x>=coordinate_x(531) && x<=coordinate_x(591) && y>=coordinate_y(215) && 											 	         y<=(coordinate_y(215)+(x+coordinate_x(531)))){
 			if(active_shape.type==2){
 				points+=10;
 			}
@@ -447,7 +449,7 @@ void on_click(int button, int state, int mouse_x, int mouse_y){
 		}
 		//braon trougao-indikator 6
 		if(x>=coordinate_x(771) && x<=coordinate_x(826) && y>=coordinate_y(215) &&
-		        y<=(coordinate_y(215)+(coordinate_x(826)-x))){
+		        y<=(coordinate_y(215)+(coordinate_x(826)+x))){
 			if(active_shape.type==6){
 				points+=10;
 			}
