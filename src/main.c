@@ -23,6 +23,8 @@ Shapes shapes_array[100];
 /*Niz objekata na slici*/
 Shapes picture_array[9];
 
+float niz[3];
+
 int mouse_x;//x koordinata misa
 int mouse_y;//y koordinata misa
 //x i y koordinate misa na bilo kom ekranu(racunaru)
@@ -94,11 +96,11 @@ int main(int argc, char ** argv){
 	//Komponente uzete sa casa vezbi i postavljeni odgovarajuci parametri za ovaj projekat
 
 	//Pozicija svetla(direkcionalno svtelo)
-	GLfloat light_position[] = { 0, 0, 0, 0 };
+	GLfloat light_position[] = {0 ,0, 0, 0};
 	//Ambijentalna boja svetla
     GLfloat light_ambient[] = { 0.8, 0.8, 0.8, 0.1 };
 	//Difuzna boja svetla
-   	GLfloat light_diffuse[] = { 0.8, 0.8, 0.8, 1 };
+   	GLfloat light_diffuse[] = { 1, 1, 1, 1 };
 	//Spekularna boja svetla
   	GLfloat light_specular[] = { 0.6, 0.6, 0.6, 1 };
 
@@ -764,5 +766,63 @@ void draw_win_screen() {
   glutSwapBuffers();
 
 }
+
+//vektor normale se mora normalizovati(jedinicni)
+void normalize(float niz[3]){
+    float length = sqrt(niz[1]*niz[1] + niz[2]*niz[2] + niz[3]*niz[3]);
+    
+    niz[1]=niz[1]/length;
+    niz[2]=niz[2]/length;
+    niz[3]=niz[3]/length;
+    
+    
+}
+
+//formula za vektorski proizvod dva vektora
+float * cross_product(float a0, float a1, float a2, float b0, float b1, float b2){
+    
+    float x1,x2,x3;
+    x1=a1*b2 - a2*b1;
+    x2=a2*b1 - a0*b2;
+    x3=a0*b1 - a1*b0;
+    
+    
+    
+    niz[0]=x1;
+    niz[1]=x2;
+    niz[3]=x3;
+    
+    
+    return niz;
+    
+}
+
+//na osnovu vektorskog proizvoda dva vektora dobicemo vektor normale
+float* calculate_normal(float a[3], float b[3], float c[3]){
+    float x[3];
+    x[0]=b[0]-a[0];
+    x[1]=b[1]-a[1];
+    x[2]=b[2]-a[2];
+    
+    
+    float y[3];
+    y[0]=c[0]-a[0];
+    y[1]=c[1]-a[1];
+    y[2]=c[2]-a[2];
+    
+    float *result=cross_product(x[0],x[1],x[2],y[0],y[1],y[2]);
+    
+     normalize(result);
+    
+    return result;
+    
+    
+    
+}
+
+
+
+
+
 
 

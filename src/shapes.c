@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include "functions.h"
 
+
+
 /*Funkcija koja iscrtava pod*/
 void draw_floor(){
 	
@@ -31,6 +33,7 @@ void draw_path(){
 }
 
 
+
 /*Funkcija koja iscrtava sliku na zidu sa okvirom*/
 void draw_picture(){
 	glPushMatrix();
@@ -38,7 +41,7 @@ void draw_picture(){
 		glScalef(2.2,1.5,0.2);
 		glLineWidth(20);
 		glTranslatef(0,0.55,0);
-		glColor3f(0.52,0.37,0.26);
+		glColor3f(0.5,0.3,0.2);
 		glutWireCube(1);
 		//glColor3f(0.91,0.76,0.65);
 		//glutSolidCube(1);
@@ -89,6 +92,7 @@ void move_shapes(double x, double y, double z, Shapes shapes_array[]){
 
 /*Funkcija koja iscrtava oblike koji su na traci*/
 void draw_shapes(Shapes shapes_array[]){
+    glEnable(GL_NORMALIZE);
 
 	if(selector_active){//ako je aktivan selektor je crveni
 		glColor3f(1,0,0);
@@ -126,6 +130,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(1,0,0);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
@@ -137,7 +152,18 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
-					glColor3f(0,0,1);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
+                    glColor3f(0,0,1);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
@@ -150,6 +176,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glScalef(0.3,0.3,0);
 			glTranslatef(1,0,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x;
+                    b[2]=shapes_array[i].y+1;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x-1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(0,1,0);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
@@ -162,6 +199,17 @@ void draw_shapes(Shapes shapes_array[]){
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
 					glColor3f(1,0,0);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
@@ -175,6 +223,17 @@ void draw_shapes(Shapes shapes_array[]){
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
 					glColor3f(1,0.5,0);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+0.75;
+                    b[2]=shapes_array[i].y+0.75;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x;
+                    c[2]=shapes_array[i].y+1.5;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+0.75,shapes_array[i].y+0.75,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y+1.5,shapes_array[i].z);
@@ -186,6 +245,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(5,0,1);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
@@ -197,6 +267,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 			glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x;
+                    b[2]=shapes_array[i].y+1;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(0.5,0.3,0.2);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y+1,shapes_array[i].z);
@@ -209,6 +290,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glTranslatef(-0.05,0,0);
 			glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1.5;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+0.75;
+                    c[2]=shapes_array[i].y+0.75;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(0,2,1);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1.5,shapes_array[i].y,shapes_array[i].z);
@@ -221,6 +313,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glTranslatef(-0.05,0,0);
 			glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1.5;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+0.75;
+                    c[2]=shapes_array[i].y+0.75;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(0,0.6,0);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1.5,shapes_array[i].y,shapes_array[i].z);
@@ -233,6 +336,17 @@ void draw_shapes(Shapes shapes_array[]){
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
 					glColor3f(5,0,1);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
@@ -244,7 +358,19 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 				glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    glNormal3f(1, 1, 1);
 					glColor3f(0,0.7,0);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y+1,shapes_array[i].z);
@@ -256,6 +382,17 @@ void draw_shapes(Shapes shapes_array[]){
 			glPushMatrix();
 			glScalef(0.3,0.3,0);
 				glBegin(GL_POLYGON);
+                    a[1]=shapes_array[i].x;
+                    a[2]=shapes_array[i].y;
+                    a[3]=shapes_array[i].z;
+                    b[1]=shapes_array[i].x+1;
+                    b[2]=shapes_array[i].y;
+                    b[3]=shapes_array[i].z;
+                    c[1]=shapes_array[i].x+1;
+                    c[2]=shapes_array[i].y+1;
+                    c[3]=shapes_array[i].z;
+                    rez=calculate_normal(a,b,c);
+                    glNormal3f(rez[0],rez[1],rez[2]);
 					glColor3f(shapes_array[i].R,shapes_array[i].G,shapes_array[i].B);
 					glVertex3f(shapes_array[i].x,shapes_array[i].y,shapes_array[i].z);
 					glVertex3f(shapes_array[i].x+1,shapes_array[i].y,shapes_array[i].z);

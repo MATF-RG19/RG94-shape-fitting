@@ -64,7 +64,15 @@ extern void draw_picture();
 extern void draw_shapes(Shapes shapes_array[]);
 void move_shapes(double x, double y, double z, Shapes shapes_array[]);
 extern void shape_select(Shapes shapes_array[]);
- 
+
+float* calculate_normal(float a[3], float b[3], float c[3]);
+float * cross_product(float a0, float a1, float a2, float b0, float b1, float b2);
+void normalize(float niz[3]);
+float a[3];
+float b[3];
+float c[3];
+float *rez; 
+
 int window_width, window_height;
 
 #endif
